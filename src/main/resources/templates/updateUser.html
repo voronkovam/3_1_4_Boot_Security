@@ -1,5 +1,4 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Save user</title>
@@ -36,17 +35,10 @@
         </p>
         <p>
             <label for="roles"><b>Role</b></label>
-            <select class="form-select w-5" multiple
-                    aria-label="multiple select example"
-                    size="2"
-                    id="roles"
-                    name="checkedRoles">
-                <option selected="true">
-                    USER
-                </option>
-                <option>
-                    ADMIN
-                </option>
+            <select multiple="multiple" th:field="*{roles}" id="roles">
+                <option th:each="role : ${roles}"
+                        th:value="${role.getId()}"
+                        th:text="${role.getName()}"></option>
             </select>
         </p>
         <br>

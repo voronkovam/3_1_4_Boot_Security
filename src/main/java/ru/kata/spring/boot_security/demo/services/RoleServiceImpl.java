@@ -1,37 +1,40 @@
 package ru.kata.spring.boot_security.demo.services;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements RoleService{
-    @PersistenceContext
-    private EntityManager entityManager;
+public class RoleServiceImpl implements RoleService {
+
+    private final RoleRepository roleRepository;
+
+    @Autowired
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
 
     @Override
     public List<Role> getListRoles() {
-        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
-    }
-
-    @Override
-    public Role getRole(String name) {
-        return entityManager.createQuery("select r from Role r where r.name =: name", Role.class)
-                .setParameter("name", name).getSingleResult();
+        return roleRepository.findAll();
     }
 
     @Override
     public Role getRoleById(Long id) {
-        return entityManager.find(Role.class, id);
+        Optional<Role> foundRole = roleRepository.findById(id);
+        return foundRole.orElse(null);
     }
 
+    @Transactional
     @Override
     public void addRole(Role role) {
-        entityManager.persist(role);
+        roleRepository.save(role);
     }
 }
