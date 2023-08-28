@@ -28,10 +28,12 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/").permitAll()
+
                 )
                 .formLogin()
+                .loginPage("/")
                 .successHandler(successUserHandler)
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .permitAll()

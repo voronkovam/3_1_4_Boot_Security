@@ -28,7 +28,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @Min(value = 0, message = "The age must be greater than zero")
+   @Min(message = "The age must be greater than zero", value = 0)
     @Column(name = "age")
     private int age;
 
@@ -169,6 +169,12 @@ public class User implements UserDetails {
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
+    }
+
+    public String printRoles() {
+        StringBuilder str = new StringBuilder("");
+        roles.forEach(role -> str.append(role.getName().replace("ROLE_", " ")));
+        return str.toString();
     }
 }
 

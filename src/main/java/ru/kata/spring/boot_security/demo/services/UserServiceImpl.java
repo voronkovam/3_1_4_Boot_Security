@@ -49,9 +49,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     @Override
-    public void saveUser(User user) {
+    public boolean saveUser(User user) {
+        User userFromDB = userRepository.findUserByEmail(user.getEmail());
+
+        if (userFromDB != null) {
+            return false;
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        return true;
     }
 
     @Override
